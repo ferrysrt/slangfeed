@@ -1,0 +1,695 @@
+{
+  "adaptation_note": "Fallback posts - used when LLM is unavailable",
+  "posts": [
+    {
+      "post_id": 1,
+      "author": {
+        "username": "@midnightcoder",
+        "display_name": "Alex Chen"
+      },
+      "content": "Interview went so well today, the manager said I'll hear back by Friday. Lowkey nervous but I think I ate that 🔥",
+      "likes": 1243,
+      "comments_count": 24,
+      "timestamp": "3h ago",
+      "filler_comments": [
+        {
+          "user": "@sarah_k",
+          "text": "you got this!! 💪"
+        },
+        {
+          "user": "@devjosh",
+          "text": "let's gooo 🎉"
+        },
+        {
+          "user": "@maya.writes",
+          "text": "manifesting for you ✨"
+        }
+      ],
+      "question_comment": {
+        "user": "@newbie_netizen",
+        "text": "what does 'ate that' mean here? 🤔"
+      },
+      "slang_tested": "ate that",
+      "options": [
+        "A. Actually ate food during the interview",
+        "B. Performed exceptionally well",
+        "C. Was very nervous and stressed",
+        "D. Made a mistake but recovered"
+      ],
+      "correct_answer": "B",
+      "explanation": "'Ate that' means someone performed exceptionally well or nailed something.",
+      "correct_response": {
+        "user": "@newbie_netizen",
+        "text": "ohh so it's like saying they killed it! thanks! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_guru",
+        "corrector_text": "not quite! 'ate that' means they performed really well, like they totally nailed it 💅"
+      }
+    },
+    {
+      "post_id": 2,
+      "author": {
+        "username": "@vibecheck_daily",
+        "display_name": "Jordan Lee"
+      },
+      "content": "Just found out my roommate has been gaslighting me this whole semester. I literally can't even rn 😭💀",
+      "likes": 2847,
+      "comments_count": 14,
+      "timestamp": "2h ago",
+      "filler_comments": [
+        {
+          "user": "@random_user1",
+          "text": "oof that's rough 😬"
+        },
+        {
+          "user": "@random_user2",
+          "text": "been there bestie 💀"
+        },
+        {
+          "user": "@random_user3",
+          "text": "sending hugs 🫂"
+        }
+      ],
+      "question_comment": {
+        "user": "@curious_learner",
+        "text": "wait what does 'gaslighting' mean here?? 🤔"
+      },
+      "slang_tested": "gaslighting",
+      "options": [
+        "A. Making someone feel guilty",
+        "B. Manipulating someone into questioning their own reality",
+        "C. Ignoring someone completely",
+        "D. Spreading rumors about someone"
+      ],
+      "correct_answer": "B",
+      "explanation": "'Gaslighting' means manipulating someone into questioning their own perception of reality.",
+      "correct_response": {
+        "user": "@curious_learner",
+        "text": "ohh that makes so much sense now! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_expert",
+        "corrector_text": "not quite — 'gaslighting' actually means manipulating someone into questioning their own reality"
+      }
+    },
+    {
+      "post_id": 3,
+      "author": {
+        "username": "@foodie_mike",
+        "display_name": "Mike Thompson"
+      },
+      "content": "Made homemade ramen from scratch today and oh my god this is bussin fr fr 🍜✨",
+      "likes": 3421,
+      "comments_count": 31,
+      "timestamp": "5h ago",
+      "filler_comments": [
+        {
+          "user": "@chef_anna",
+          "text": "drop the recipe!! 🙏"
+        },
+        {
+          "user": "@hungryhippo",
+          "text": "this looks incredible omg"
+        },
+        {
+          "user": "@noodlelover",
+          "text": "I need this in my life rn 😍"
+        }
+      ],
+      "question_comment": {
+        "user": "@confused_carl",
+        "text": "what does 'bussin' mean? never heard that before 🤔"
+      },
+      "slang_tested": "bussin",
+      "options": [
+        "A. Traveling by bus",
+        "B. Looking messy or unorganized",
+        "C. Extremely good, especially food",
+        "D. Being very busy"
+      ],
+      "correct_answer": "C",
+      "explanation": "'Bussin' means something is extremely good, especially used for delicious food.",
+      "correct_response": {
+        "user": "@confused_carl",
+        "text": "ohh so it's like saying it's really delicious! got it, thanks! 😄"
+      },
+      "wrong_response": {
+        "corrector_user": "@word_wizard",
+        "corrector_text": "nah, 'bussin' means something is extremely good, mostly used for food that's really delicious 🍕"
+      }
+    },
+    {
+      "post_id": 4,
+      "author": {
+        "username": "@sportyspice99",
+        "display_name": "Priya Sharma"
+      },
+      "content": "Messi really proved everyone wrong at the World Cup. He's the GOAT and there's no debate 🐐🏆",
+      "likes": 8934,
+      "comments_count": 47,
+      "timestamp": "1h ago",
+      "filler_comments": [
+        {
+          "user": "@soccer_fan",
+          "text": "GOATED performance fr 🔥"
+        },
+        {
+          "user": "@sports_daily",
+          "text": "legendary moment in football history"
+        },
+        {
+          "user": "@balldontlie",
+          "text": "chills every time I rewatch it 😤"
+        }
+      ],
+      "question_comment": {
+        "user": "@new_to_sports",
+        "text": "everyone keeps saying GOAT, what does that mean? 🤔"
+      },
+      "slang_tested": "GOAT",
+      "options": [
+        "A. Someone who acts silly",
+        "B. Greatest Of All Time",
+        "C. A type of celebration dance",
+        "D. Someone who is very old"
+      ],
+      "correct_answer": "B",
+      "explanation": "'GOAT' stands for Greatest Of All Time, referring to the best person in their field.",
+      "correct_response": {
+        "user": "@new_to_sports",
+        "text": "ohh Greatest Of All Time! that makes total sense now, thanks! 🙌"
+      },
+      "wrong_response": {
+        "corrector_user": "@acronym_king",
+        "corrector_text": "GOAT stands for Greatest Of All Time — it's used for someone who's the absolute best at what they do 🐐"
+      }
+    },
+    {
+      "post_id": 5,
+      "author": {
+        "username": "@datingdiaries",
+        "display_name": "Sam Rivera"
+      },
+      "content": "So this guy I was talking to just completely ghosted me after we made plans for Saturday. I'm so done with dating apps 😤👻",
+      "likes": 1876,
+      "comments_count": 22,
+      "timestamp": "4h ago",
+      "filler_comments": [
+        {
+          "user": "@bestie_mae",
+          "text": "you deserve so much better!! 💕"
+        },
+        {
+          "user": "@dating_is_hard",
+          "text": "unfortunately so relatable 😩"
+        },
+        {
+          "user": "@single_life",
+          "text": "this is why I deleted all dating apps tbh"
+        }
+      ],
+      "question_comment": {
+        "user": "@old_school_dater",
+        "text": "what does 'ghosted' mean in this context? 🤔"
+      },
+      "slang_tested": "ghosting",
+      "options": [
+        "A. Scared someone with a ghost costume",
+        "B. Blocked someone on all social media",
+        "C. Suddenly stopped all communication without explanation",
+        "D. Talked about someone behind their back"
+      ],
+      "correct_answer": "C",
+      "explanation": "'Ghosting' means suddenly cutting off all communication with someone without any explanation.",
+      "correct_response": {
+        "user": "@old_school_dater",
+        "text": "oh wow that's so rude! thanks for explaining 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@dating_coach",
+        "corrector_text": "'ghosting' means suddenly disappearing and cutting off all communication without any explanation 👻"
+      }
+    },
+    {
+      "post_id": 6,
+      "author": {
+        "username": "@gym_bro_jake",
+        "display_name": "Jake Martinez"
+      },
+      "content": "Can't believe she got salty because I beat her at Mario Kart 😂 it's just a game lmao",
+      "likes": 956,
+      "comments_count": 18,
+      "timestamp": "6h ago",
+      "filler_comments": [
+        {
+          "user": "@gamer_girl",
+          "text": "to be fair Rainbow Road hits different 😤"
+        },
+        {
+          "user": "@console_king",
+          "text": "Mario Kart ruins friendships fr 💀"
+        },
+        {
+          "user": "@lol_daily",
+          "text": "been there done that 😂"
+        }
+      ],
+      "question_comment": {
+        "user": "@literal_larry",
+        "text": "what does 'salty' mean here? like actual salt? 🤔"
+      },
+      "slang_tested": "salty",
+      "options": [
+        "A. Covered in salt from eating snacks",
+        "B. Being bitter or upset about something",
+        "C. Being really hungry",
+        "D. Feeling tired and exhausted"
+      ],
+      "correct_answer": "B",
+      "explanation": "'Salty' means being bitter, upset, or irritated about something, often a loss.",
+      "correct_response": {
+        "user": "@literal_larry",
+        "text": "ohhh so it's like being a sore loser! thanks for the explanation 😄"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_dictionary",
+        "corrector_text": "'salty' here means being bitter or upset about something, not actual salt 😅"
+      }
+    },
+    {
+      "post_id": 7,
+      "author": {
+        "username": "@music_maven",
+        "display_name": "Taylor Kim"
+      },
+      "content": "This new Sabrina Carpenter album is lowkey the best thing I've heard all year and I can't stop replaying it 🎵🔁",
+      "likes": 2134,
+      "comments_count": 28,
+      "timestamp": "3h ago",
+      "filler_comments": [
+        {
+          "user": "@pop_enthusiast",
+          "text": "taste!! the production is insane 🔥"
+        },
+        {
+          "user": "@vinyl_collector",
+          "text": "already ordered the vinyl edition 😤"
+        },
+        {
+          "user": "@music_nerd",
+          "text": "espresso still hits different tho ☕"
+        }
+      ],
+      "question_comment": {
+        "user": "@vocab_newbie",
+        "text": "what does 'lowkey' mean here? 🤔"
+      },
+      "slang_tested": "lowkey",
+      "options": [
+        "A. Something that is very loud",
+        "B. Secretly or subtly",
+        "C. An inside joke",
+        "D. Something that is boring"
+      ],
+      "correct_answer": "B",
+      "explanation": "'Lowkey' means secretly, subtly, or in a low-profile way.",
+      "correct_response": {
+        "user": "@vocab_newbie",
+        "text": "so like they secretly love it! makes sense, thanks! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@word_nerd",
+        "corrector_text": "'lowkey' means secretly or subtly — like you're not broadcasting it loudly 🤫"
+      }
+    },
+    {
+      "post_id": 8,
+      "author": {
+        "username": "@campus_chronicles",
+        "display_name": "Aisha Patel"
+      },
+      "content": "My professor showed up to lecture in a full suit and sneakers. No cap that fit was fire 🔥👟",
+      "likes": 4521,
+      "comments_count": 35,
+      "timestamp": "2h ago",
+      "filler_comments": [
+        {
+          "user": "@fashion_forward",
+          "text": "professors with drip >> 😂"
+        },
+        {
+          "user": "@study_buddy",
+          "text": "iconic behavior honestly"
+        },
+        {
+          "user": "@campus_style",
+          "text": "need to know what sneakers those were 👀"
+        }
+      ],
+      "question_comment": {
+        "user": "@new_here",
+        "text": "what does 'no cap' mean? 🤔"
+      },
+      "slang_tested": "no cap",
+      "options": [
+        "A. Without wearing a hat",
+        "B. Without any money",
+        "C. For real; not lying",
+        "D. Without permission"
+      ],
+      "correct_answer": "C",
+      "explanation": "'No cap' means 'for real' or 'I'm not lying.' 'Cap' means a lie, so 'no cap' = no lie.",
+      "correct_response": {
+        "user": "@new_here",
+        "text": "ooh so it's like saying 'I'm being serious'! got it, thanks! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_sensei",
+        "corrector_text": "'no cap' means 'for real' or 'I'm not lying' — nothing to do with hats 😂"
+      }
+    },
+    {
+      "post_id": 9,
+      "author": {
+        "username": "@wellness_warrior",
+        "display_name": "Chris O'Brien"
+      },
+      "content": "TFW you finally finish your thesis at 3am and your laptop dies right before you save 💀😭",
+      "likes": 6732,
+      "comments_count": 41,
+      "timestamp": "8h ago",
+      "filler_comments": [
+        {
+          "user": "@night_owl",
+          "text": "this is my worst nightmare 😱"
+        },
+        {
+          "user": "@student_struggles",
+          "text": "auto-save is your best friend 😤"
+        },
+        {
+          "user": "@coffee_addict",
+          "text": "I would simply pass away 💀"
+        }
+      ],
+      "question_comment": {
+        "user": "@internet_newbie",
+        "text": "what does 'TFW' mean? I see it everywhere 🤔"
+      },
+      "slang_tested": "TFW",
+      "options": [
+        "A. Thanks For Watching",
+        "B. That Feeling When",
+        "C. The First Week",
+        "D. Too Far Away"
+      ],
+      "correct_answer": "B",
+      "explanation": "'TFW' stands for 'That Feeling When' — used to describe relatable moments or emotions.",
+      "correct_response": {
+        "user": "@internet_newbie",
+        "text": "That Feeling When — oh that actually makes so much sense! thanks! 😄"
+      },
+      "wrong_response": {
+        "corrector_user": "@acronym_ace",
+        "corrector_text": "TFW = That Feeling When! It's used to set up a relatable situation 😊"
+      }
+    },
+    {
+      "post_id": 10,
+      "author": {
+        "username": "@adventure_alex",
+        "display_name": "Alex Wong"
+      },
+      "content": "My coworker just flexed his new Tesla in the parking lot for 20 minutes. Sir this is a Wendy's 😂💀",
+      "likes": 3289,
+      "comments_count": 26,
+      "timestamp": "1h ago",
+      "filler_comments": [
+        {
+          "user": "@office_humor",
+          "text": "every office has one of these 😭"
+        },
+        {
+          "user": "@cubicle_life",
+          "text": "the Wendy's reference is sending me 💀"
+        },
+        {
+          "user": "@car_enthusiast",
+          "text": "to be fair Teslas are pretty cool tho 🤷"
+        }
+      ],
+      "question_comment": {
+        "user": "@slang_student",
+        "text": "what does 'flexed' mean in this context? 🤔"
+      },
+      "slang_tested": "flex",
+      "options": [
+        "A. Stretched his muscles",
+        "B. Showed off or bragged about something",
+        "C. Worked very hard on something",
+        "D. Parked his car badly"
+      ],
+      "correct_answer": "B",
+      "explanation": "'Flex' means to show off or brag about something, usually possessions or achievements.",
+      "correct_response": {
+        "user": "@slang_student",
+        "text": "ohh showing off! that makes way more sense than flexing muscles 😂 thanks!"
+      },
+      "wrong_response": {
+        "corrector_user": "@definition_pro",
+        "corrector_text": "'flexing' here means showing off or bragging — not the gym kind of flexing 😅💪"
+      }
+    },
+    {
+      "post_id": 11,
+      "author": {
+        "username": "@gym.rat.daily",
+        "display_name": "Jordan Miles"
+      },
+      "content": "My gym buddy canceled AGAIN and said he was tired. Bro, I've been pulling double shifts all week and I still showed up. There's no excuse, he's just lazy fr.",
+      "likes": 2891,
+      "comments_count": 22,
+      "timestamp": "4h ago",
+      "filler_comments": [
+        {
+          "user": "@fitfam.jay",
+          "text": "hold him accountable 💪"
+        },
+        {
+          "user": "@marathon.mia",
+          "text": "discipline > motivation"
+        },
+        {
+          "user": "@yoga.with.em",
+          "text": "respect the consistency 🙏"
+        }
+      ],
+      "question_comment": {
+        "user": "@wondering.wo",
+        "text": "what does 'fr' mean here? 🤔"
+      },
+      "slang_tested": "fr",
+      "options": [
+        "A. for real; seriously",
+        "B. feeling rested",
+        "C. for a reason",
+        "D. feeling rare"
+      ],
+      "correct_answer": "A",
+      "explanation": "'Fr' is short for 'for real' — used to emphasize that you are being serious or sincere.",
+      "correct_response": {
+        "user": "@wondering.wo",
+        "text": "ohh that makes sense! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_sensei",
+        "corrector_text": "not quite — 'fr' actually means: 'Fr' is short for 'for real' — used to emphasize that you are being serious or sincere."
+      }
+    },
+    {
+      "post_id": 12,
+      "author": {
+        "username": "@bookworm.sarah",
+        "display_name": "Sarah Kim"
+      },
+      "content": "Everyone hyped this novel for months so I finally read it and honestly it was so mid. Predictable plot, flat characters, rushed ending. Why is everyone lying to themselves?",
+      "likes": 5120,
+      "comments_count": 38,
+      "timestamp": "7h ago",
+      "filler_comments": [
+        {
+          "user": "@plot.twist.pete",
+          "text": "finally someone said it"
+        },
+        {
+          "user": "@reads.at.2am",
+          "text": "the hype was unjustified fr"
+        },
+        {
+          "user": "@literary.luna",
+          "text": "which one was it? 👀"
+        }
+      ],
+      "question_comment": {
+        "user": "@just.asking",
+        "text": "wait, what does 'mid' mean in this context? 🤔"
+      },
+      "slang_tested": "mid",
+      "options": [
+        "A. mediocre; not good or special",
+        "B. middle of a series",
+        "C. midnight release",
+        "D. mid-budget production"
+      ],
+      "correct_answer": "A",
+      "explanation": "'Mid' describes something mediocre — underwhelming and not worth the hype.",
+      "correct_response": {
+        "user": "@just.asking",
+        "text": "ohh that makes sense! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@word_wizard",
+        "corrector_text": "not quite — 'mid' actually means: 'Mid' describes something mediocre — underwhelming and not worth the hype."
+      }
+    },
+    {
+      "post_id": 13,
+      "author": {
+        "username": "@hoops.center",
+        "display_name": "Dre Watkins"
+      },
+      "content": "My little brother cleaned the whole house, did his homework early, AND made dinner. He definitely understood the assignment. Mom's gonna be so proud when she's back.",
+      "likes": 7432,
+      "comments_count": 41,
+      "timestamp": "2h ago",
+      "filler_comments": [
+        {
+          "user": "@proud.aunt.vibes",
+          "text": "raise him right 🙌"
+        },
+        {
+          "user": "@chores.champ",
+          "text": "give that boy a raise"
+        },
+        {
+          "user": "@mom.friend.energy",
+          "text": "someone's got siblings of the year"
+        }
+      ],
+      "question_comment": {
+        "user": "@no.idea.ned",
+        "text": "what does 'understood the assignment' mean here? 🤔"
+      },
+      "slang_tested": "understood the assignment",
+      "options": [
+        "A. did exactly what was expected and nailed it",
+        "B. finished homework before deadline",
+        "C. wrote down the instructions",
+        "D. asked the teacher for help"
+      ],
+      "correct_answer": "A",
+      "explanation": "'Understood the assignment' means someone did exactly what was needed — and did it impressively well.",
+      "correct_response": {
+        "user": "@no.idea.ned",
+        "text": "ohh that makes sense! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_guru",
+        "corrector_text": "not quite — 'understood the assignment' actually means: 'Understood the assignment' means someone did exactly what was needed — and did it impressively well."
+      }
+    },
+    {
+      "post_id": 14,
+      "author": {
+        "username": "@soft.launch.life",
+        "display_name": "Nina Alvarez"
+      },
+      "content": "He's been in my stories, liking every post, texting me good morning every single day... but we're not official. Is this a situationship or am I just delulu? 😅",
+      "likes": 9210,
+      "comments_count": 47,
+      "timestamp": "5h ago",
+      "filler_comments": [
+        {
+          "user": "@realtalk.renee",
+          "text": "the situationship is situationship-ing"
+        },
+        {
+          "user": "@date.ography",
+          "text": "girl know your worth 💅"
+        },
+        {
+          "user": "@hopeless.romantic.h",
+          "text": "manifesting the hard launch for you"
+        }
+      ],
+      "question_comment": {
+        "user": "@confused_kay",
+        "text": "what does 'delulu' mean in this post? 🤔"
+      },
+      "slang_tested": "delulu",
+      "options": [
+        "A. delusional; believing something unrealistic",
+        "B. deeply loyal",
+        "C. delightful and silly",
+        "D. determined and focused"
+      ],
+      "correct_answer": "A",
+      "explanation": "'Delulu' is slang for delusional — playfully believing in something that probably isn't real.",
+      "correct_response": {
+        "user": "@confused_kay",
+        "text": "ohh that makes sense! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@word_wizard",
+        "corrector_text": "not quite — 'delulu' actually means: 'Delulu' is slang for delusional — playfully believing in something that probably isn't real."
+      }
+    },
+    {
+      "post_id": 15,
+      "author": {
+        "username": "@gamer.grindset",
+        "display_name": "Kai Tanaka"
+      },
+      "content": "Down 12 rounds, one HP left, and this man still clutched the whole tournament. His comms were calm the entire time too. That's him being locked in, no fear at all.",
+      "likes": 6655,
+      "comments_count": 33,
+      "timestamp": "1h ago",
+      "filler_comments": [
+        {
+          "user": "@fps.fanatic",
+          "text": "cold blooded performance 🥶"
+        },
+        {
+          "user": "@esports.enzo",
+          "text": "clutch god behavior"
+        },
+        {
+          "user": "@ranked.rage",
+          "text": "I would have panicked instantly"
+        }
+      ],
+      "question_comment": {
+        "user": "@new_here",
+        "text": "what does 'locked in' mean here? 🤔"
+      },
+      "slang_tested": "locked in",
+      "options": [
+        "A. fully focused and performing at their best",
+        "B. trapped in the game lobby",
+        "C. locked out of their account",
+        "D. signed a professional contract"
+      ],
+      "correct_answer": "A",
+      "explanation": "'Locked in' means being fully focused, determined, and performing at peak level.",
+      "correct_response": {
+        "user": "@new_here",
+        "text": "ohh that makes sense! thanks!! 😊"
+      },
+      "wrong_response": {
+        "corrector_user": "@slang_sensei",
+        "corrector_text": "not quite — 'locked in' actually means: 'Locked in' means being fully focused, determined, and performing at peak level."
+      }
+    }
+  ]
+}

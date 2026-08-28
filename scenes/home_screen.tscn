@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://home_screen"]
+
+[ext_resource type="Script" path="res://scripts/home_screen.gd" id="1_home"]
+
+[node name="HomeScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_home")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="LogoLabel" type="Label" parent="CenterContainer/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "📸 SLANGFEED"
+horizontal_alignment = 1
+
+[node name="TaglineLabel" type="Label" parent="CenterContainer/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.56, 0.56, 1)
+theme_override_font_sizes/font_size = 14
+text = "Learn slang. Gain followers."
+horizontal_alignment = 1
+
+[node name="InputSection" type="VBoxContainer" parent="CenterContainer/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="UsernameHeader" type="Label" parent="CenterContainer/MainVBox/InputSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/font_size = 13
+text = "Your username:"
+
+[node name="UsernameInput" type="LineEdit" parent="CenterContainer/MainVBox/InputSection"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(280, 44)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/caret_color = Color(0, 0.584, 0.965, 1)
+theme_override_font_sizes/font_size = 16
+placeholder_text = "@username"
+alignment = 1
+
+[node name="ErrorLabel" type="Label" parent="CenterContainer/MainVBox/InputSection"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.27, 0.27, 1)
+theme_override_font_sizes/font_size = 12
+text = "Username must be at least 3 characters"
+horizontal_alignment = 1
+visible = false
+
+[node name="FollowerSection" type="HBoxContainer" parent="CenterContainer/MainVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="FollowerIcon" type="Label" parent="CenterContainer/MainVBox/FollowerSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "👥 Followers: "
+
+[node name="FollowerLabel" type="Label" parent="CenterContainer/MainVBox/FollowerSection"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.584, 0.965, 1)
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="StartButton" type="Button" parent="CenterContainer/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(280, 50)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Start Scrolling"
+
+[node name="SlangCountLabel" type="Label" parent="CenterContainer/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.56, 0.56, 1)
+theme_override_font_sizes/font_size = 13
+text = "📖 0 slangs learned"
+horizontal_alignment = 1

@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dhqq41sh2vexl"
+
+[deps]
+
+files=["res://data/slang_dataset.definition.translation", "res://data/slang_dataset.origin.translation"]
+
+source_file="res://data/slang_dataset.csv"
+dest_files=["res://data/slang_dataset.definition.translation", "res://data/slang_dataset.origin.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

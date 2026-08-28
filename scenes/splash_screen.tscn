@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bqdstxci4vyfu"]
+
+[ext_resource type="Script" uid="uid://qndprcolx632" path="res://scripts/splash_screen.gd" id="1_splash"]
+
+[node name="SplashScreen" type="Control" unique_id=721815277]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_splash")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1945296679]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1087850346]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1312943849]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Logo" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1728234506]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "📸 SlangFeed"
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1279813416]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.56, 0.56, 1)
+theme_override_font_sizes/font_size = 14
+text = "Learn slang. Gain followers."
+horizontal_alignment = 1

@@ -1,0 +1,26 @@
+# Legacy backend (FastAPI+Groq, arsip sebelum migrasi ke pipeline GitHub Actions)
+backend_legacy/
+*.translation
+.import/
+/android/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets & local keys (API key TIDAK boleh dibundle — SRS NFR-5)
+.env
+backend/.env
+user://openrouter_key.txt
+openrouter_key.txt
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+export/
+build/
