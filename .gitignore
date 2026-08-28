@@ -1,5 +1,8 @@
 # Legacy backend (FastAPI+Groq, arsip sebelum migrasi ke pipeline GitHub Actions)
 backend_legacy/
+
+# Godot
+.godot/
 *.translation
 .import/
 /android/
