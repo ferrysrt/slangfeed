@@ -10,7 +10,7 @@ const LLM_MAX_TOKENS := 2000
 const LLM_TEMPERATURE := 0.7
 
 # ===== Dataset (FIX #1: runtime fetch, bukan bundle) =====
-const DATASET_URL := "https://raw.githubusercontent.com/USERNAME/REPO/main/data/slang_dataset.csv"
+const DATASET_URL := "https://raw.githubusercontent.com/ferrysrt/slangfeed/main/data/slang_dataset.csv"
 const DATASET_TIMEOUT_SEC := 5.0     # SRS FR-B4: timeout keras loader
 const DATASET_MAX_ENTRIES := 200     # SRS FR-A10
 
