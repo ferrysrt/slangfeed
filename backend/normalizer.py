@@ -75,6 +75,15 @@ def normalize(raw_texts: list[str]) -> list[dict]:
 
 
 def _sanitize(s: str) -> str:
-    """FIX #9: garansi comma-free & quote-free (parser klien cukup split(','))."""
+    """FIX #9: garansi comma-free & quote-free (parser klien cukup split(',')).
+    Security: neutralisasi karakter formula-injection CSV (audit fix #2)
+    dan strip markdown link/image syntax untuk membatasi prompt injection
+    (audit fix #3 — blast radius)."""
+    s = str(s)
+    # Neutralisasi formula injection: awalan berbahaya diganti dengan apostrof safety
+    if s and s[0] in ("=", "+", "-", "@"):
+        s = "'" + s
+    # Strip markdown links/images [text](url) dan ![alt](url) dari konten web
+    s = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", s)
     s = s.replace('"', "").replace(",", " ").replace("\r", " ").replace("\n", " ")
     return re.sub(r"\s+", " ", s).strip()

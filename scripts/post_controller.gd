@@ -320,7 +320,7 @@ func show_correct_feedback(player_username: String) -> void:
 	# Player's answer
 	var player_comment := RichTextLabel.new()
 	player_comment.bbcode_enabled = true
-	player_comment.text = "[color=#4ade80]↪ @" + player_username + ": answered correctly ✅[/color]"
+	player_comment.text = "[color=#4ade80]↪ @" + _esc(player_username) + ": answered correctly ✅[/color]"
 	player_comment.fit_content = true
 	player_comment.scroll_active = false
 	player_comment.add_theme_font_size_override("normal_font_size", 13)
@@ -356,7 +356,7 @@ func show_wrong_feedback(player_username: String) -> void:
 	# Player's wrong answer
 	var player_comment := RichTextLabel.new()
 	player_comment.bbcode_enabled = true
-	player_comment.text = "[color=#ef4444]↪ @" + player_username + ": answered incorrectly ❌[/color]"
+	player_comment.text = "[color=#ef4444]↪ @" + _esc(player_username) + ": answered incorrectly ❌[/color]"
 	player_comment.fit_content = true
 	player_comment.scroll_active = false
 	player_comment.add_theme_font_size_override("normal_font_size", 13)
@@ -389,6 +389,11 @@ func get_response_time_ms() -> int:
 	return Time.get_ticks_msec() - answer_time_start
 
 # ===== HELPER METHODS =====
+
+## Audit fix #5: escape karakter BBCode agar teks dari LLM/web tak bisa
+## menyuntik format/spoofing ke RichTextLabel.
+func _esc(s: String) -> String:
+	return str(s).replace("[", "\\[").replace("]", "\\]")
 
 func _add_comment(username: String, text: String, parent: VBoxContainer, color: Color = Color(0.56, 0.56, 0.56)) -> void:
 	var label := RichTextLabel.new()

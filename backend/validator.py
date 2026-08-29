@@ -83,5 +83,9 @@ def save_log(stats: dict, extra: dict | None = None) -> str:
 
 
 def _sanitize(s: str) -> str:
+    """Neutralisasi formula-injection CSV (audit fix #2) + comma-free (FIX #9)."""
+    s = str(s)
+    if s and s[0] in ("=", "+", "-", "@"):
+        s = "'" + s
     s = s.replace('"', "").replace(",", " ").replace("\r", " ").replace("\n", " ")
     return re.sub(r"\s+", " ", s).strip()

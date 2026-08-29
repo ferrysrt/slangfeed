@@ -1,5 +1,7 @@
-# Legacy backend (FastAPI+Groq, arsip sebelum migrasi ke pipeline GitHub Actions)
-backend_legacy/
+# Non-essential working files (jangan di-repo)
+.exum/
+.agent/
+
 
 # Godot
 .godot/

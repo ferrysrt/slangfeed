@@ -1,29 +1,35 @@
 name: SlangFeed Dataset Pipeline
 
+# Security design (audit fix #1):
+# - Job "build" menjalankan kode pihak ketiga (pip install) + secrets TANPA write token.
+# - Job "publish" memegang write token TANPA secrets & TANPA runtime install.
+# Dengan ini, kompromi dependency tidak bisa mencuri token push, dan
+# token push tidak pernah berada di proses yang sama dengan pip install.
+
 on:
   schedule:
     - cron: "0 3 * * 1"   # Setiap Senin 03:00 UTC
   workflow_dispatch:       # Bisa dijalankan manual dari tab Actions
 
 permissions:
-  contents: write
+  contents: read           # default read; publish job yang minta write
 
 jobs:
-  build-dataset:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - name: Checkout
+      - name: Checkout (tanpa kredensial persist)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          persist-credentials: false   # token push tidak pernah dikirim ke job ini
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install dependencies (pinned)
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
@@ -35,6 +41,29 @@ jobs:
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL || 'openai/gpt-oss-120b' }}
         run: |
           python backend/main.py || exit 1
+
+      - name: Upload dataset artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dataset
+          path: |
+            data/slang_dataset.csv
+            logs/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download dataset artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dataset
 
       - name: Commit & push dataset (jika berubah)
         run: |

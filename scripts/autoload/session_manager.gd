@@ -14,7 +14,7 @@ var fallback_count: int = 0
 # ===== SESSION LIFECYCLE =====
 
 func start_session() -> void:
-	current_session_id = GameData.player_username + "_" + str(Time.get_unix_time_from_system())
+	current_session_id = _sanitize_filename(GameData.player_username) + "_" + str(Time.get_unix_time_from_system())
 	session_start_time = Time.get_datetime_string_from_system()
 	session_history.clear()
 	used_slangs.clear()
@@ -116,6 +116,16 @@ func save_session_log() -> void:
 	var filename := LOGS_DIR + current_session_id + ".json"
 	var file := FileAccess.open(filename, FileAccess.WRITE)
 	if file:
-		file.store_string(JSON.stringify(log_data, "\t"))
+		file.store_string(JSON.stringify(log_data, "	"))
 		file.close()
 		print("[SessionManager] Log saved: ", filename)
+
+## Audit fix #4: sanitasi nama file log dari input username (blokir path separator).
+func _sanitize_filename(name: String) -> String:
+	var out := ""
+	for ch in name:
+		if ch in ["/", "\\", ":", "*", "?", "\"", "<", ">", "|", "\n", "\r", "	", " "]:
+			out += "_"
+		else:
+			out += ch
+	return out.substr(0, 40)
