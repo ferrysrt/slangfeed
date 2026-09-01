@@ -67,8 +67,8 @@ jobs:
 
       - name: Commit & push dataset (jika berubah)
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Ferry Sirait"
+          git config user.email "136626822+ferrysrt@users.noreply.github.com"
           git add data/slang_dataset.csv logs/
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan dataset — skip push"
