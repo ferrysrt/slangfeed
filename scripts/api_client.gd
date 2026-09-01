@@ -1,55 +1,56 @@
 extends Node
-## API Client — LLM#2 Generator (plan1-revisi v2 Bagian 2B / SRS FR-C1..C6).
-## Mengirim prompt ke OpenRouter LANGSUNG dari game (tanpa backend lokal).
-## Kontrak output LLM (SRS 4.3): post_text, comment_text, options[4] unik,
-## correct_index (0..3), explanation. Field kosong/kurang = GAGAL (lenient:
-## field ekstra diabaikan). Gagal → retry 1× → fallback.json (FR-C4).
-## Output di-expand menjadi format post rich yang dikonsumsi feed_manager/post_controller.
+## API Client — LLM#2 Generator dengan RANTAI PROVIDER.
+## Tier 1: Groq LPU (primary — sesuai proposal Batasan #3: latensi rendah, 500+ t/s)
+## Tier 2: OpenRouter (fallback — agregator, model sama openai/gpt-oss-120b)
+## Tier 3: fallback.json statis terkurasi (15 soal manual)
+## Aturan per provider: 1 percobaan + 1 retry (SRS FR-C4).
+## Kegagalan permanen (401/403 = key invalid) → langsung pindah provider tanpa retry.
+## Kontrak output LLM (plan1-revisi 4.3): post_text, comment_text, options[4] unik,
+## correct_index, explanation. Tidak terpenuhi = gagal → jalur retry/fallback.
 
 signal batch_received(posts: Array, is_fallback: bool, adaptation_note: String)
 signal batch_failed(error: String)
 
-const TIMEOUT_SEC := 10.0  # Config.LLM_TIMEOUT_SEC (FR-C4)
-
 var _http: HTTPRequest
 var _fallback_data: Dictionary = {}
+var _provider_idx: int = 0
 var _retry_count: int = 0
 var _current_entries: Array = []
 var _request_start_ms: int = 0
-var _metrics := {"generated": 0, "fallback": 0, "invalid_json": 0, "last_latency_ms": 0}
+var _metrics := {"generated": 0, "fallback": 0, "invalid_json": 0, "provider_switches": 0, "last_latency_ms": 0, "last_provider": ""}
 
 func _ready() -> void:
 	randomize()
 	_http = HTTPRequest.new()
-	_http.timeout = TIMEOUT_SEC
+	_http.timeout = Config.LLM_TIMEOUT_SEC
 	_http.use_threads = true
 	add_child(_http)
 	_http.request_completed.connect(_on_request_completed)
 	_load_fallback()
-	print("[APIClient] Init OK. Model: ", Config.OPENROUTER_MODEL, " | key terbaca: ", not _get_api_key().is_empty())
+	var t1: Dictionary = Config.LLM_PROVIDERS[0]
+	print("[APIClient] Init OK. Tier1: ", t1.get("name"), " (", t1.get("model"), ") key=", not _get_key_for(t1).is_empty(),
+		" | Tier2: ", Config.LLM_PROVIDERS[1].get("name"), " key=", not _get_key_for(Config.LLM_PROVIDERS[1]).is_empty())
 
-# ===== API KEY (SRS NFR-5) =====
+# ===== API KEY (SRS NFR-5: user:// file → env var; tidak dibundle) =====
 
-func _get_api_key() -> String:
-	# Prioritas: user://openrouter_key.txt (git-ignored, tidak dibundle) → env var
-	if FileAccess.file_exists("user://" + Config.API_KEY_FILENAME):
-		var f := FileAccess.open("user://" + Config.API_KEY_FILENAME, FileAccess.READ)
+func _get_key_for(provider: Dictionary) -> String:
+	var fname := "user://" + str(provider.get("key_file", ""))
+	if FileAccess.file_exists(fname):
+		var f := FileAccess.open(fname, FileAccess.READ)
 		if f:
 			var key := f.get_as_text().strip_edges()
 			f.close()
 			if key != "":
 				return key
-	return OS.get_environment("OPENROUTER_API_KEY").strip_edges()
+	return OS.get_environment(str(provider.get("env_var", ""))).strip_edges()
 
-# ===== FALLBACK =====
+# ===== FALLBACK STATIS (Tier 3) =====
 
 func _load_fallback() -> void:
 	var file := FileAccess.open("res://data/fallback_posts.json", FileAccess.READ)
 	if file:
 		var json := JSON.new()
-		var err := json.parse(file.get_as_text())
-		file.close()
-		if err == OK:
+		if json.parse(file.get_as_text()) == OK:
 			_fallback_data = json.data
 			print("[APIClient] Fallback loaded: ", _fallback_data.get("posts", []).size(), " posts")
 			return
@@ -57,44 +58,48 @@ func _load_fallback() -> void:
 
 # ===== REQUEST FLOW =====
 
-## Signature tetap sama dengan versi lama agar feed_manager tidak berubah.
 func request_batch(session_context: Dictionary) -> void:
 	var used: Array = session_context.get("slangs_already_used", [])
 	var picked := _pick_entries(Config.BATCH_SIZE, used)
 	if picked.is_empty():
-		# Semua sudah terpakai → boleh ulang bebas (SRS FR-C1: prioritas, bukan mutlak)
 		picked = _pick_entries(Config.BATCH_SIZE, [])
 	if picked.is_empty():
 		_use_fallback("Dataset kosong — tidak ada entri tersedia")
 		return
-
 	_current_entries = picked
-	var api_key := _get_api_key()
-	if api_key == "":
-		print("[APIClient] API key kosong → fallback langsung (mode demo aman)")
-		_use_fallback("API key tidak tersedia")
-		return
-
+	_provider_idx = 0
 	_retry_count = 0
-	_send_request(picked, api_key)
+	_try_current_provider()
 
-func _send_request(entries: Array, api_key: String) -> void:
+func _try_current_provider() -> void:
+	if _provider_idx >= Config.LLM_PROVIDERS.size():
+		_use_fallback("Semua provider LLM gagal")
+		return
+	var provider: Dictionary = Config.LLM_PROVIDERS[_provider_idx]
+	var api_key := _get_key_for(provider)
+	if api_key == "":
+		print("[APIClient] [", provider.get("name"), "] key tidak tersedia → tier berikutnya")
+		_next_provider("key kosong")
+		return
+	_send_request(provider, api_key)
+
+func _send_request(provider: Dictionary, api_key: String) -> void:
 	var body := JSON.stringify({
-		"model": Config.OPENROUTER_MODEL,
+		"model": provider.get("model"),
 		"temperature": Config.LLM_TEMPERATURE,
 		"max_tokens": Config.LLM_MAX_TOKENS,
 		"messages": [
 			{"role": "system", "content": _build_system_prompt()},
-			{"role": "user", "content": _build_user_prompt(entries)}
-		]
+			{"role": "user", "content": _build_user_prompt(_current_entries)},
+		],
 	})
 	var headers := [
 		"Content-Type: application/json",
 		"Authorization: Bearer " + api_key,
 	]
 	_request_start_ms = Time.get_ticks_msec()
-	print("[APIClient] POST OpenRouter (%d entri, attempt %d)..." % [entries.size(), _retry_count + 1])
-	var err := _http.request(Config.OPENROUTER_URL, headers, HTTPClient.METHOD_POST, body)
+	print("[APIClient] POST ", provider.get("name"), " (", provider.get("model"), "), attempt ", _retry_count + 1)
+	var err := _http.request(str(provider.get("url")), headers, HTTPClient.METHOD_POST, body)
 	if err != OK:
 		_on_attempt_failed("request() error %d" % err)
 
@@ -103,9 +108,16 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 	if result != HTTPRequest.RESULT_SUCCESS:
 		_on_attempt_failed("result=%d (%s)" % [result, _result_name(result)])
 		return
+	if response_code == 401 or response_code == 403:
+		# Key invalid/tercabut → retry di provider yang sama percuma
+		_next_provider("HTTP %d (key invalid)" % response_code)
+		return
+	if response_code == 429:
+		# Rate limit → retry di provider yang sama kemungkinan besar gagal juga
+		_next_provider("HTTP 429 (rate limit)")
+		return
 	if response_code != 200:
-		var snippet := body.get_string_from_utf8().substr(0, 300)
-		print("[APIClient] HTTP %d: %s" % [response_code, snippet])
+		print("[APIClient] HTTP %d: %s" % [response_code, body.get_string_from_utf8().substr(0, 200)])
 		_on_attempt_failed("HTTP %d" % response_code)
 		return
 
@@ -115,7 +127,7 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 		_on_attempt_failed("respons bukan JSON valid")
 		return
 
-	var content: String = ""
+	var content := ""
 	var choices = parsed.get("choices", [])
 	if choices.size() > 0 and choices[0] is Dictionary:
 		var msg = choices[0].get("message", {})
@@ -132,17 +144,27 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 		return
 
 	_metrics.generated += posts.size()
-	print("[APIClient] SUCCESS: %d soal valid (%d ms)" % [posts.size(), _metrics.last_latency_ms])
-	batch_received.emit(posts, false, "LLM#2 " + Config.OPENROUTER_MODEL)
+	var pname := str(Config.LLM_PROVIDERS[_provider_idx].get("name"))
+	_metrics.last_provider = pname
+	print("[APIClient] SUCCESS via ", pname, ": %d soal valid (%d ms)" % [posts.size(), _metrics.last_latency_ms])
+	batch_received.emit(posts, false, "LLM#2 via " + pname)
 
 func _on_attempt_failed(reason: String) -> void:
 	print("[APIClient] Attempt gagal: ", reason)
-	if _retry_count < 1:  # FR-C4: retry tepat 1×
+	if _retry_count < 1:
 		_retry_count += 1
-		print("[APIClient] Retry ke-%d..." % _retry_count)
-		_send_request(_current_entries, _get_api_key())
+		_try_current_provider()
 	else:
-		_use_fallback(reason)
+		_next_provider(reason)
+
+func _next_provider(reason: String) -> void:
+	_provider_idx += 1
+	_retry_count = 0
+	_metrics.provider_switches += 1
+	if _provider_idx < Config.LLM_PROVIDERS.size():
+		var next: Dictionary = Config.LLM_PROVIDERS[_provider_idx]
+		print("[APIClient] Pindah ke tier ", _provider_idx + 1, ": ", next.get("name"), " (alasan: ", reason, ")")
+	_try_current_provider()
 
 func _result_name(r: int) -> String:
 	match r:
@@ -157,7 +179,7 @@ func _result_name(r: int) -> String:
 		HTTPRequest.RESULT_TIMEOUT: return "TIMEOUT"
 		_: return str(r)
 
-# ===== SAMPLING ENTRI (FR-C1: acak, anti-repetisi sesi) =====
+# ===== SAMPLING ENTRI (FR-C1) =====
 
 func _pick_entries(n: int, exclude: Array) -> Array:
 	var pool := DatasetLoader.entries
@@ -171,7 +193,7 @@ func _pick_entries(n: int, exclude: Array) -> Array:
 	available.shuffle()
 	return available.slice(0, min(n, available.size()))
 
-# ===== PROMPT (FR-C2: constraint distraktor + few-shot 1 contoh) =====
+# ===== PROMPT (FR-C2) =====
 
 func _build_system_prompt() -> String:
 	return """You are a question generator for SlangFeed, an educational game about English internet slang.
@@ -216,18 +238,17 @@ Remember: options[0] position does NOT have to be the correct answer — vary co
 		JSON.stringify(compact, "  "),
 	]
 
-# ===== VALIDASI KONTRAK + EXPAND KE FORMAT UI (FR-C3) =====
+# ===== VALIDASI KONTRAK + EXPAND (FR-C3) =====
 
 func _validate_and_expand(content: String) -> Array:
 	var json_text := _extract_json_array(content)
 	if json_text == "":
 		print("[APIClient] Tidak ada JSON array di respons")
 		return []
-	var parsed = JSON.parse_string(json_text)
+	var parsed: Variant = JSON.parse_string(json_text)
 	if parsed == null or not (parsed is Array):
 		print("[APIClient] JSON array parse gagal")
 		return []
-
 	var out: Array = []
 	for i in parsed.size():
 		var q = parsed[i]
@@ -239,7 +260,6 @@ func _validate_and_expand(content: String) -> Array:
 		out.append(_expand_to_rich_post(q, out.size() + 1))
 	return out
 
-## Validasi kontrak dokumen: field wajib lengkap; field ekstra diabaikan (lenient).
 func _valid_question(q: Dictionary) -> bool:
 	var post_text := str(q.get("post_text", "")).strip_edges()
 	var comment_text := str(q.get("comment_text", "")).strip_edges()
@@ -256,11 +276,9 @@ func _valid_question(q: Dictionary) -> bool:
 		if t == "":
 			return false
 		if seen.has(t.to_lower()):
-			return false  # opsi harus unik
+			return false
 		seen[t.to_lower()] = true
 	var ci = q.get("correct_index", -1)
-	# Godot JSON.parse_string mengembalikan angka sebagai float; OpenRouter pun demikian.
-	# Terima int ATAU float bulat di [0..3].
 	if not (ci is int or ci is float):
 		return false
 	ci = int(ci)
@@ -268,7 +286,6 @@ func _valid_question(q: Dictionary) -> bool:
 		return false
 	return true
 
-## Extract array JSON dari teks LLM (tahan markdown fence / prolog).
 func _extract_json_array(text: String) -> String:
 	var start := text.find("[")
 	var end := text.rfind("]")
@@ -276,13 +293,10 @@ func _extract_json_array(text: String) -> String:
 		return ""
 	return text.substr(start, end - start + 1)
 
-## Expand kontrak minimal → format rich yang dikonsumsi feed_manager/post_controller.
-## Field kosmetik (username, likes, filler comments, response) dibangkitkan lokal
-## secara deterministik-acak — hemat token LLM dan tetap konsisten dengan UI.
 func _expand_to_rich_post(q: Dictionary, post_id: int) -> Dictionary:
 	var slang := str(q.get("slang_tested", ""))
 	var options: Array = q.get("options", [])
-	var correct_index: int = q.get("correct_index", 0)
+	var correct_index: int = int(q.get("correct_index", 0.0))
 	var letters := ["A", "B", "C", "D"]
 	var display_options: Array = []
 	for i in 4:
@@ -324,7 +338,6 @@ const CURIOUS_POOL := ["@curious.carl", "@newbie_netizen", "@confused_kay", "@ju
 const FILLER_TEXTS := ["this is so real 😂", "why is this literally me", "ok but same tho", "no wayyy 😭", "the accuracy 💀", "saving this post fr", "obsessed with this energy ✨", "tell me why this is on my fyp rn"]
 
 func _rand_username(slang_seed: String) -> String:
-	# Deterministik dari slang: username TIDAK boleh membocorkan arti slang (SRS FR-D1)
 	var idx: int = abs(int(slang_seed.hash())) % USERNAME_POOL.size()
 	return USERNAME_POOL[idx]
 
@@ -341,10 +354,10 @@ func _rand_filler_comments(_slang: String) -> Array:
 		out.append({"user": users[i], "text": pool[i]})
 	return out
 
-# ===== FALLBACK (FR-C4: setelah retry gagal) =====
+# ===== FALLBACK =====
 
 func _use_fallback(reason: String) -> void:
-	print("[APIClient] >>> FALLBACK: ", reason)
+	print("[APIClient] >>> FALLBACK (Tier 3): ", reason)
 	var posts: Array = _fallback_data.get("posts", [])
 	var used: Array[String] = []
 	for s in SessionManager.used_slangs:
@@ -355,7 +368,6 @@ func _use_fallback(reason: String) -> void:
 			available.append(p)
 	var selected: Array = available if available.size() <= Config.BATCH_SIZE else available.slice(0, Config.BATCH_SIZE)
 	if selected.is_empty():
-		# Semua fallback terpakai → reset dan pakai dari awal (batch tetap tampil)
 		selected = posts.slice(0, min(Config.BATCH_SIZE, posts.size()))
 	if selected.is_empty():
 		batch_failed.emit("Fallback kosong — fallback_posts.json tidak terbaca")
@@ -364,6 +376,6 @@ func _use_fallback(reason: String) -> void:
 	SessionManager.fallback_count += selected.size()
 	batch_received.emit(selected, true, "Fallback: " + reason)
 
-## Untuk layar debug/analitik (SRS Bagian 7: error rate LLM#2)
+## Untuk layar debug/analitik (SRS Bagian 7: error rate & perilaku rantai provider)
 func get_metrics() -> Dictionary:
 	return _metrics.duplicate()
