@@ -1,6 +1,8 @@
 """
 SlangFeed Pipeline — Collector
-FIX #6: query pakai tahun dinamis dari tanggal run.
+FIX #6 (v2): query pakai bulan + tahun DINAMIS dari tanggal run
+(contoh: "latest internet slang September 2026") — mempersempit hasil
+ke tren terkini. Timezone UTC = zona waktu runner GitHub Actions.
 Firecrawl search API (REST langsung, tanpa SDK — lebih stabil antar versi)
 -> dapat 10 URL + konten markdown (scrapeOptions) -> fallback scrape per-URL.
 """
@@ -10,14 +12,15 @@ import os
 import requests
 
 API_URL = "https://api.firecrawl.dev"
-SEARCH_QUERY_TEMPLATE = "latest internet slang {year} -site:youtube.com -site:tiktok.com"
+SEARCH_QUERY_TEMPLATE = "latest internet slang {month} {year} -site:youtube.com -site:tiktok.com"
 MAX_URLS = 10
 DELAY_SEC = 1.0
 
 
 def get_search_query() -> str:
-    from datetime import datetime
-    return SEARCH_QUERY_TEMPLATE.format(year=datetime.now().year)
+    from datetime import datetime, timezone
+    now = datetime.now(timezone.utc)
+    return SEARCH_QUERY_TEMPLATE.format(month=now.strftime("%B"), year=now.year)
 
 
 def _headers(api_key: str) -> dict:
